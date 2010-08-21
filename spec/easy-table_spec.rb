@@ -1,7 +1,8 @@
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+require 'spec_helper'
 
-describe "EasyTable" do
-  it "fails" do
-    fail "hey buddy, you should probably rename this file and start specing for real"
+module EasyTable
+  describe ViewExtension do
+    it "should work..." do    
+    end
   end
 end
