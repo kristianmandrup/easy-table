@@ -1,29 +1,80 @@
-module EasyTable
-  module ViewExtension
-    def table(collection, headers, options = {}, &proc)
-      obj_type = collection.first.class.to_s
+require 'active_support/inflector'
 
-      options.reverse_merge!({
-        :placeholder  => 'Nothing to display',
-        :caption      => nil,
-        :summary      => nil,
-        :footer       => ''
-        :table_class  => obj_type
-      })           
-    
-      unless collection.any?
-        content = with_output_buffer(&block)
+module EasyTable
+  module ViewExtension                                 
+
+    def data_table(collection, headers, options = {})    
+      obj_type = get_obj_type collection
+      set_options! options
+
+      content = with_output_buffer(&block)    
+      unless collection.any?        
         content = placeholder 
         return content
-      end
+      end          
 
-      content_tag :table, :class => options[:table_class], :summary => summary do
+      # try to extract attributes from headers!
+      attributes = options[:attributes] || extract_attributes(collection.first, headers)
+
+      arg_err = "You must specify an :attributes hash option to indicate which attributes of #{obj_type.camelize} should be rendered in the table!"
+      raise ArgumentError, arg_err if !attributes.any?
+
+      classes = options[:classes] || []
+      
+      render_table options do
+        render_caption options[:caption]            
+        render_header headers
+        render_footer options[:footer]  
+        do_tag 1, :tbody do
+          rows collection, attributes, classes
+        end
+      end      
+    end
+    
+    def extract_attributes obj, headers
+      headers.map do |header|
+        attrib = header.to_s.underscore
+        obj.respond_to?(attrib) ? attrib : nil
+      end.compact
+    end
+        
+    def table(collection, headers, options = {}, &block)
+      obj_type = get_obj_type collection
+      set_options! options
+
+      content = with_output_buffer(&block)    
+      unless collection.any?        
+        content = placeholder 
+        return content
+      end          
+      
+      render_table options do
         render_caption options[:caption]            
         render_header headers
         render_footer options[:footer]  
         render_tbody collection, &block       
       end
     end
+
+    def set_options! options={}
+      options.reverse_merge!({
+        :placeholder  => options[:placeholder] || 'Nothing to display',
+        :caption      => nil,
+        :summary      => nil,
+        :footer       => ''
+        :table_class  => obj_type
+      })           
+    end
+
+    def get_obj_type collection
+      collection.first.class.to_s      
+    end
+
+    def render_table options = {}, &block
+      content_tag :table, :class => options[:table_class], :summary => options[:summary] do 
+        yield block
+      end
+    end        
 
     def render_tbody collection, &block 
       do_tag 1, :tbody do
@@ -62,17 +113,15 @@ module EasyTable
       end  
     end
 
-    def rows collection, attributes, clazz, &block
+    def rows collection, attributes, classes=nil
+      content = ''
       collection.each do |obj|                  
-        row_content = data_row(obj, attributes, row_class)
+        row_content = data_row(obj, attributes, get_row_class(classes))
         content << indent(2) + row_content
       end      
+      content
     end
-
-    def row_class 
-      cycle('odd', 'even')
-    end
-  
+      
     def row post, clazz, &block
       do_tag 2, :tr, :class => clazz, yield post
     end
@@ -87,13 +136,21 @@ module EasyTable
 
     def cells object, attributes, classes=nil
       attributes.each_with_index do |attrib, index|
-        cell object, attrib, cycle(classes) if classes.any?
+        cell object, attrib, get_row_class(classes)
       end
     end
   
     def cell object, attribute, clazz=nil
       value = object.send attribute if object.respond_to? attribute
       do_tag 3, :td, :class => clazz, value || "Unknown attribute: #{attribute}"
+    end
+
+    def get_row_class classes
+      classes.any? ? cycle(classes) : row_class
+    end
+
+    def row_class 
+      cycle('odd', 'even')
     end
   
     def do_tag lv, *args, &block        

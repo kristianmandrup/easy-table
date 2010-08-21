@@ -65,11 +65,24 @@ The last argument to cells is the CSS classes to cycle
 Example: Using *rows* helper
 
 <pre>
-  <% table(@posts, %w{ID title}) do |post, klass| -%>
-      <% rows klass, :id, :title -%>
+  <% render_table 'posts', 'Posts table', do -%>
+      <% rows @posts, klass, :id, :title -%>
   <% end -%>  
 </pre>
 
+
+Example: Using *data_table* helper
+
+This will by default try to extract attribute names from the headers list!
+<pre>
+  <% data_table @posts, %w{ID title}, :summary => 'Posts table' -%>
+</pre>
+
+Supply an :attributes options hash value to select attributes to display
+
+<pre>
+  <% data_table @posts, %w{Number Title}, :attributes => %w{id label} -%>
+</pre>
 
 ## Note on Patches/Pull Requests
  
