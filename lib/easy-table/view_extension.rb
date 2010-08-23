@@ -61,7 +61,7 @@ module EasyTable
         :placeholder  => options[:placeholder] || 'Nothing to display',
         :caption      => nil,
         :summary      => nil,
-        :footer       => ''
+        :footer       => '',
         :table_class  => obj_type
       })           
     end
@@ -122,14 +122,14 @@ module EasyTable
       content
     end
       
-    def row post, clazz, &block
-      do_tag 2, :tr, :class => clazz, yield post
+    def row object, clazz, &block
+      do_tag 2, :tr, :class => clazz, yield object
     end
 
     def data_row object, attributes, clazz
-      row clazz do
-        attributes.each do |attrib|      
-          cell object, attrib, clazz=nil      
+      row object, clazz do
+        attributes.each do |attrib|
+          cell object, attrib, clazz
         end
       end
     end
