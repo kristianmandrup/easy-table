@@ -1,17 +1,6 @@
 require 'spec_helper'
 require 'easy-table/view_extension'
 
-module EasyTable
-  module ViewExtension    
-    def set attributes={}
-      attributes.each do |key, value|
-        instance_var = "@#{key}"
-        instance_variable_set(instance_var, value)
-      end
-    end      
-  end
-end
-
 describe EasyTable do
   setup_action_view do
     tests EasyTable::ViewExtension
