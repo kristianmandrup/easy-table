@@ -1,10 +1,11 @@
 require 'require_all'
 require_all File.dirname(__FILE__) + '/row'
+require 'easy-table/cell'
 
 module EasyTable::ViewExt
   module Row
     def render_header heads
-      return if !heads.any?
+      return nil if heads.empty?
 
       indent_tag 1, :thead do
         indent_tag 2, :tr do 
@@ -14,7 +15,7 @@ module EasyTable::ViewExt
     end
 
     def render_footer footer, headers
-      return if !footer
+      return nil if footer.blank? || !headers.any?
       indent_tag 1, :foot do
         indent_tag 2, :tr do      
           indent_tag(3, :th, footer, :colspan => headers.size).indent 2

@@ -2,7 +2,6 @@ require 'spec_helper'
 
 require 'sugar-high/includes'
 require 'easy-table/namespaces'
-require 'easy-table/cell'
 require 'easy-table/row'
 
 describe EasyTable::ViewExt::Row do

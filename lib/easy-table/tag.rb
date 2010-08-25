@@ -8,6 +8,10 @@ module EasyTable::ViewExt
       indent_tag 0, *args, &block
     end
 
+    def block_tag(tag, options = {}, &block)
+      concat(content_tag(tag, capture(&block), options))
+    end
+
     def indent(lv)
       "\n" + ("  " * lv)
     end

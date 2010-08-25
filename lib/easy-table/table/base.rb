@@ -1,27 +1,29 @@
+require 'easy-table/row'
+
 module EasyTable::ViewExt::Table
   module Base
     def render_table options = {}, &block
-      content_tag :table, :class => options[:table_class], :summary => options[:summary] do 
-        yield block
+      content_tag :table, options do
+        with_output_buffer(&block).indent(0)
       end
     end        
 
-    def render_tbody collection, &block 
-      do_tag 1, :tbody do
-        table_body(collection, &block)
+    def render_tbody collection, options={}, &block 
+      indent_tag 1, :tbody do
+        table_body(collection, options, &block).indent(1)
       end
     end
 
-    def table_body collection, &block
-      content = with_output_buffer(&block)
+    def table_body collection, options = {}, &block
+      content = []
       collection.each do |obj|
-        row_content = yield obj, row_class
-        content << indent(2) + row_content
+        content << with_output_buffer { yield obj, options }
       end      
+      content.join
     end
 
     def render_caption caption
-      do_tag 1, :caption, caption if caption
+      indent_tag(1, :caption, caption) if !caption.blank?
     end
   end
 end

@@ -1,6 +1,8 @@
 require 'spec_helper'  
 
 require 'sugar-high/includes'
+require 'sugar-high/blank'
+
 require 'easy-table/namespaces'
 
 require 'easy-table/table'
@@ -18,12 +20,10 @@ describe EasyTable::ViewExt::Table::Base do
     @posts = [@post, @post2]
   end
                              
-  describe '#table' do
-    it 'should display a table' do
+  describe '#data_table' do
+    it 'should display a table caption' do
       with_action_view do |view|             
-        res = view.table @posts, %w{id title} do |post|
-          view.data_row post, %w{id title}
-        end
+        res = view.data_table @posts, %w{Id Title}, :summary => 'many posts', :caption => 'posts table'
         puts res
       end
     end

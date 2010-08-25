@@ -1,12 +1,80 @@
 # Easy Table
 
-Table helpers for your views to facilitate creating tables using a nice DSL similar to simpleform and formtastic for forms ;)
+Table helpers for your views to facilitate creating tables using a nice DSL similar to what 'simpleform' and 'formtastic' are for forms ;)
 
 ## Install
 
 <code>gem install easy-table</code>
 
-## Usage
+## Demo
+
+<pre> 
+  <code>
+  data_table @posts, %w{Id Title}, :summary => 'many posts', :caption => 'posts table'  
+
+  =>
+  <table>
+    <thead>
+      <tr>
+        <th>id</th>
+        <th>title</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>my post</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>my other post</td>
+      </tr>
+    </tbody>
+  </table>  
+  </code>
+</pre>
+
+## Helpers
+
+The following is the current Table Helper API. 
+
+_Note:_ This API clearly needs to be cleaned up in the "near" future ;)
+
+### Table
+
+* data_table
+* table
+* render_table
+
+### Table parts
+
+* render_tbody
+* table_body
+* render_caption
+* render_header
+* render_footer
+* headers
+
+### Rows
+
+* row
+* data_rows
+* data_row
+
+### Cells
+
+* cells
+* cell
+
+### Misc
+
+* indent_tag_
+
+## Usage   
+
+The following examples might not all be compatible with any API changes. 
+Please raise an issue if you find a mismatch or have a problem using it ;)
+Thanks!
 
 Example: Using *table* helper
 
@@ -22,7 +90,7 @@ Example: Using *table* helper
 Example: Using *row* helper
 
 <pre>
-  <% table(@posts, %w{ID title}) do |post, klass| -%>
+  <% table @posts, %w{ID title} do |post, klass| -%>
       <% row klass do |post| -%>
         <td><%= post.id %></td>
         <td><%= post.title %></td>
@@ -33,7 +101,7 @@ Example: Using *row* helper
 Example: Using *row* and *cell* helpers
 
 <pre>
-  <% table(@posts, %w{ID title}) do |post, klass| -%>
+  <% table @posts, %w{ID title} do |post, klass| -%>
       <% row klass do |post| -%>
         <%= cell post.id %>
         <%= cell post.title %>
@@ -44,7 +112,7 @@ Example: Using *row* and *cell* helpers
 Example: Using *data_row* helper
 
 <pre>
-  <% table(@posts, %w{ID title}) do |post, klass| -%>
+  <% table @posts, %w{ID title} do |post, klass| -%>
       <% data_row post, %w{id title}, klass -%>
   <% end -%>  
 </pre>
@@ -55,7 +123,7 @@ Example: Using *cells* helper
 The last argument to cells is the CSS classes to cycle
 
 <pre>
-  <% table(@posts, %w{ID title}) do |post, klass| -%>
+  <% table @posts, %w{ID title} do |post, klass| -%>
       <% row klass do |post| -%>
         <%= cells post, %w{id title}, %w{number label} %>
       <% end -%>

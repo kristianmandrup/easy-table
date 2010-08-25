@@ -1,25 +1,29 @@
+require 'require_all'
 require_all File.dirname(__FILE__) + '/table'
+require 'easy-table/row'
 
 module EasyTable::ViewExt
   module Table
     def table(collection, headers, options = {}, &block)
       obj_type = get_obj_type collection
       set_options! options
+          
+      return options[:placeholder] unless collection.any?
 
-      content = with_output_buffer(&block)    
-      unless collection.any?        
-        content = placeholder 
-        return content
-      end          
+      options.delete :placeholder
+      caption = options.delete :caption
+      footer  = options.delete :footer
   
       render_table options do
-        render_caption options[:caption]            
-        render_header headers
-        render_footer options[:footer], headers  
-        render_tbody collection, &block       
+        [
+          render_caption(caption),
+          render_header(headers),
+          render_footer(footer, headers),
+          render_tbody(collection, &block)
+        ].compact.join
       end
     end
 
-    includes :base, :util, :data
+    includes :base, :data
   end 
 end

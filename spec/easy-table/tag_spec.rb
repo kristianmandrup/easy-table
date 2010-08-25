@@ -18,6 +18,17 @@ describe EasyTable::ViewExt::Tag do
     end
   end
 
+  describe '#block_tag' do
+    it 'should display an tag with NO indent' do
+      with_action_view do |view| 
+        res = view.block_tag :li, :class => 'mine' do
+          'hello'
+        end        
+        puts res
+      end
+    end
+  end
+
   describe '#indent_tag' do
     it 'should display a 2*2 space indented tag' do
       with_action_view do |view| 
