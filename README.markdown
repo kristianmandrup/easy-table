@@ -53,7 +53,7 @@ _Note:_ This API clearly needs to be cleaned up in the "near" future ;)
 * render_caption
 * render_header
 * render_footer
-* headers
+* header_row
 
 ### Rows
 
