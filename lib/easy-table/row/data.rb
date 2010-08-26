@@ -2,6 +2,7 @@ module EasyTable::ViewExt::Row
   module Data
     def data_rows collection, attributes, options = {}
       content = []
+      reset_cycle('rows')
       collection.each do |obj|                        
         row_content = data_row(obj, attributes, options)        
         content << indent(2) + row_content
@@ -12,7 +13,7 @@ module EasyTable::ViewExt::Row
     def data_row object, attributes, options={}            
       row_content = attribute_cells object, attributes, options.clone
 
-      cls_opt = class_option(:row_classes, options, 'row')
+      cls_opt = class_option(:row_classes, options, :name => 'rows')
       options[:row] ||= {}
       options[:row].merge!(cls_opt)
       
@@ -22,8 +23,9 @@ module EasyTable::ViewExt::Row
     def attribute_cells object, attributes, options = {}
       options.delete(:row_classes)
       content = []
+      reset_cycle('cells')      
       attributes.each do |attrib|
-        cls_opt = class_option(:cell_classes, options, 'cell')
+        cls_opt = class_option(:cell_classes, options, :name => 'cells')
         
         content << cell(object, attrib, options.merge(cls_opt))
         content << ''.indent(2) if attrib == attributes.last

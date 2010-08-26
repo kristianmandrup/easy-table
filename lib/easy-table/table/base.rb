@@ -4,7 +4,7 @@ module EasyTable::ViewExt::Table
   module Base
     def render_table options = {}, &block
       content_tag :table, options do
-        with_output_buffer(&block).indent(0)
+        yield.indent(0)
       end
     end        
 
@@ -19,7 +19,7 @@ module EasyTable::ViewExt::Table
       collection.each do |obj|
         content << with_output_buffer { yield obj, options }
       end      
-      content.join
+      content.join.html_safe
     end
 
     def render_caption caption

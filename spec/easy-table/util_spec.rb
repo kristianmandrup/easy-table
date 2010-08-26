@@ -34,7 +34,7 @@ describe EasyTable::ViewExt::Util do
         end
         res.should match(/abc/)
         res.should match(/def/)
-        puts res      
+        # puts res      
       end
     end
   end

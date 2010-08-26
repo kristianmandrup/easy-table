@@ -13,9 +13,10 @@ module EasyTable::ViewExt
     end
     
     def cells object, attributes, options = {}
-      content = []
+      content = []            
+      reset_cycle('cells')
       attributes.each_with_index do |attrib, index|    
-        cls_opt = class_option(:classes, options)
+        cls_opt = class_option(:classes, options, :name => 'cells')
         
         content << cell(object, attrib, options.merge(cls_opt))
         content << ''.indent(2) if attrib == attributes.last

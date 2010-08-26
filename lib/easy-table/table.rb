@@ -13,14 +13,15 @@ module EasyTable::ViewExt
       options.delete :placeholder
       caption = options.delete :caption
       footer  = options.delete :footer
+
   
-      render_table options do
+      render_table options do   
         [
           render_caption(caption),
           render_header(headers),
           render_footer(footer, headers),
           render_tbody(collection, &block)
-        ].compact.join
+        ].compact.join.html_safe
       end
     end
 

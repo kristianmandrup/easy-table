@@ -7,9 +7,7 @@ require 'easy-table/table'
 require 'easy-table/row'
 
 describe EasyTable::ViewExt::Table::Base do
-  setup_action_view do
-    tests EasyTable::ViewExt::Table, EasyTable::ViewExt::Row, EasyTable::ViewExt::Cell, EasyTable::ViewExt::Tag
-  end
+  extend_view_with EasyTable::ViewExt, :table, :row, :cell, :tag
 
   before :each do
     @post = stub(:title => 'my post', :id => 1, :author => 'kristian' )
@@ -20,12 +18,34 @@ describe EasyTable::ViewExt::Table::Base do
                              
   describe '#table' do
     it 'should display a table' do
-      with_action_view do |view|             
-        res = view.table @posts, %w{id title} do |post|
-          view.data_row post, %w{id title}
-        end
-        puts res
+      with_engine(:erb) do |e|        
+        res = e.run_template_locals :posts => @posts do %{
+          <%= table posts, %w{id title} do |post| %>
+            <%= data_row post, %w{id title} %>
+          <% end %>
+        }
+        end      
+        res.should match /<table>/
+        res.should match /<tr>/
+        res.should match /<td>1<\/td>/
+        res.should match /<td>my post<\/td>/
+        # puts res        
       end
     end
-  end
+
+    it 'should display a blank table' do
+      with_engine(:erb) do |e|        
+        res = e.run_template_locals :posts => @posts do %{
+          <%= table posts, %w{id title} do %>
+            hello
+          <% end %>
+        }
+        end      
+        res.should match /<table>/
+        res.should match /hello/
+        # puts res        
+      end
+    end
+
+  end                             
 end
