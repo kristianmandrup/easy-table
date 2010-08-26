@@ -9,7 +9,7 @@ module EasyTable::ViewExt
         content << indent_tag(3, :th, head)
         content << ''.indent(2) if head == heads.last        
       end
-      content.join
+      content.join.html_safe
     end
     
     def cells object, attributes, options = {}
@@ -20,15 +20,16 @@ module EasyTable::ViewExt
         content << cell(object, attrib, options.merge(cls_opt))
         content << ''.indent(2) if attrib == attributes.last
       end
-      content.join
+      content.join.html_safe
     end
 
     def cell object, attribute, options = {} 
+      options.delete(:classes)
       options.delete(:cell_classes)
       options.delete(:row_classes)
-      options.delete(:row)      
+      options.delete(:row)
       value = object.send(attribute) || "Unknown attribute: #{attribute}"
-      indent_tag 3, :td, value, options
+      indent_tag(3, :td, value, options).html_safe
     end  
     
     include EasyTable::ViewExt::Util    
