@@ -8,13 +8,33 @@ describe EasyTable::ViewExt::Util do
   describe '#cycle' do
     it 'should cycle classes' do
       with_engine(:erb) do |e|
-        res = e.run_template do %{
+        res = e.run_template_locals :options => {:row_classes => %w{class1 class2}} do %{
+          <%= class_option :row_classes, options %>
+          <%= class_option :row_classes, options %>
+        }
+        end
+        res.should match(/class1/)
+        res.should match(/class2/)      
+      end
+      
+    end
+  end
+
+
+
+  describe '#cycle' do
+    it 'should cycle classes' do
+      with_engine(:erb) do |e|
+        res = e.run_template_locals :classes => ["abc", "def"] do %{
           <%= cycle("abc", "def") %>
           <%= cycle("abc", "def") %>
+          <%= cycle(*classes) %>
+          <%= cycle(*classes) %>
         }
         end
         res.should match(/abc/)
-        res.should match(/def/)      
+        res.should match(/def/)
+        puts res      
       end
     end
   end

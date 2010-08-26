@@ -3,7 +3,7 @@ require 'easy-table/tag'
 
 module EasyTable::ViewExt
   module Cell
-    def headers heads
+    def header_row heads
       content = []
       heads.each do |head| 
         content << indent_tag(3, :th, head)

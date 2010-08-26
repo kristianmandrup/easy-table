@@ -9,23 +9,31 @@ module EasyTable::ViewExt
 
       indent_tag 1, :thead do
         indent_tag 2, :tr do 
-          headers heads          
+          header_row heads          
         end.indent 1
-      end  
+      end.html_safe  
     end
 
-    def render_footer footer, headers
-      return nil if footer.blank? || !headers.any?
-      indent_tag 1, :foot do
-        indent_tag 2, :tr do      
-          indent_tag(3, :th, footer, :colspan => headers.size).indent 2
-        end.indent(1)
+    def render_footer footer, headers             
+      size = case headers
+      when Fixnum
+        headers
+      when Array
+        headers.size
+      else
+        raise ArgumentError, "Must take a 2nd argument that indicates number of columns the footer should span"
       end
+      return nil if footer.blank?
+      indent_tag 1, :tfoot do
+        indent_tag 2, :tr do      
+          indent_tag(3, :th, footer, :colspan => size).indent 2
+        end.indent(1)
+      end.html_safe
     end
   
     def row object, options={}, &block
       content = with_output_buffer { yield object }
-      indent_tag 2, :tr, content.html_safe, options
+      indent_tag(2, :tr, content, options).html_safe
     end
     
     includes :data

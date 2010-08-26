@@ -5,7 +5,7 @@ require 'easy-table/namespaces'
 require 'easy-table/cell'
 
 describe EasyTable::ViewExt::Cell do
-  extend_view_with EasyTable::ViewExt::Cell, EasyTable::ViewExt::Tag
+  extend_view_with EasyTable::ViewExt, :cell, :tag
 
   before :each do
     @post = stub(:title => 'my post', :id => 1, :author => 'kristian' )
@@ -32,8 +32,7 @@ describe EasyTable::ViewExt::Cell do
       end
     end
   end
-  
-  
+    
   describe '#cells' do
     it 'should display cells for post' do
       with_engine do |e|        
@@ -54,6 +53,19 @@ describe EasyTable::ViewExt::Cell do
         end
         res.should match /<td class="red">1<\/td>/
         res.should match /<td class="blue">my post<\/td>/
+      end
+    end
+  end
+
+  describe '#headers' do
+    it 'should display header cells' do
+      with_engine do |e|        
+        res = e.run_template do %{
+          <%= header_row %w{Id Title} %>
+        }
+        end
+        res.should match /<th>Id<\/th>/
+        res.should match /<th>Title<\/th>/
       end
     end
   end
