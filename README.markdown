@@ -2,6 +2,8 @@
 
 Table helpers for your views to facilitate creating tables using a nice DSL similar to what 'simpleform' and 'formtastic' are for forms ;)
 
+_Note:_ Updated with some notes on API changes and refactorings planned for the near future
+
 ## Install
 
 <code>gem install easy-table</code>
@@ -34,6 +36,25 @@ Table helpers for your views to facilitate creating tables using a nice DSL simi
   </code>
 </pre>
 
+## TODO
+
+Encapsulate much of the functionality better
+
+* method *table* => return EasyTable::Table object
+* method *row* => return EasyTable::Row object 
+* method *t.headers* => return EasyTable::Header object 
+
+Clean up directory structure to put methods in the right, folders, files and containers. Also, avoid cramming too many functions into the View!
+
+
+Future API (should be part of *tables_on_roles* gem)
+<pre>
+  data_table posts, %w{id name}, :actions => {:edit => :owner, :delete => :admin}
+
+  # Provide labels and role lists  
+  data_table posts, %w{id name}, :actions => {:edit => [:owner, 'Edit post], :delete => [:admin, :owner, 'Delete the post']}  
+</pre>
+
 ## Helpers
 
 The following is the current Table Helper API. 
@@ -43,32 +64,36 @@ _Note:_ This API clearly needs to be cleaned up in the "near" future ;)
 ### Table
 
 * data_table
-* table
-* render_table
+* table => EasyTable::Table
+* render_table (rename to table_tag)
 
 ### Table parts
 
-* render_tbody
-* table_body
-* render_caption
-* render_header
-* render_footer
-* header_row
+
+* table_body (rename to tbody)
+
+The following methods should only be available on the EasyTable::Table object returned by *table*
+
+* render_tbody -> t.tbody, tbody_tag
+* render_caption -> t.caption, caption_tag
+* render_header -> t.head, thead_tag
+* render_footer -> t.footer, tfoot_tag
+* header_row -> t.header
 
 ### Rows
 
-* row
 * data_rows
 * data_row
+* row : => EasyTable::Row
 
 ### Cells
 
-* cells
-* cell
+* cells, r.cells
+* cell, r.cell, cell_tag
 
 ### Misc
 
-* indent_tag_
+* indent_tag
 
 ## Usage   
 
