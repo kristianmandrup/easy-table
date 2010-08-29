@@ -9,7 +9,7 @@ module EasyTable::ViewExt::Table
       content.join.html_safe
     end
 
-    def render_header heads
+    def header_tag heads
       return nil if heads.empty?
 
       indent_tag 1, :thead do

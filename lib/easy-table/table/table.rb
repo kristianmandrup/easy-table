@@ -15,18 +15,19 @@ module EasyTable::ViewExt
       footer  = options.delete :footer
 
   
-      Helper.render_table options do   
+      table_tag options do   
         [
-          render_caption(caption),
-          render_header(headers),
-          render_footer(footer, headers),
-          render_tbody(collection, &block)
+          caption_tag(caption),
+          header_tag(headers),
+          footer_tag(footer, headers),
+          tbody_tag(collection, &block)
+          
         ].compact.join.html_safe
       end
     end
 
     module Helper
-      def self.render_table options = {}, &block
+      def table_tag options = {}, &block
         content_tag :table, options do
           yield.indent(0)
         end
@@ -36,3 +37,5 @@ module EasyTable::ViewExt
     includes :base, :data
   end 
 end
+
+
