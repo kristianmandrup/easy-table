@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{easy-table}
-  s.version = "0.2.0"
+  s.version = "0.2.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Kristian Mandrup"]
-  s.date = %q{2010-08-26}
+  s.date = %q{2010-09-25}
   s.description = %q{Makes it easy to add tables to your views using a nice DSL similar to the form helpers}
   s.email = %q{kmandrup@gmail.com}
   s.extra_rdoc_files = [
@@ -26,25 +26,8 @@ Gem::Specification.new do |s|
      "VERSION",
      "easy-table.gemspec",
      "lib/easy-table.rb",
-     "lib/easy-table/cell.rb",
      "lib/easy-table/namespaces.rb",
-     "lib/easy-table/rails_config.rb",
-     "lib/easy-table/row.rb",
-     "lib/easy-table/row/data.rb",
-     "lib/easy-table/table.rb",
-     "lib/easy-table/table/base.rb",
-     "lib/easy-table/table/data_table.rb",
-     "lib/easy-table/tag.rb",
-     "lib/easy-table/util.rb",
-     "lib/easy-table/view_extension.rb",
-     "spec/easy-table/cell_spec.rb",
-     "spec/easy-table/row/data_row_spec.rb",
-     "spec/easy-table/row/row_spec.rb",
-     "spec/easy-table/table/base_spec.rb",
-     "spec/easy-table/table/data_table_spec.rb",
      "spec/easy-table/table/table_spec.rb",
-     "spec/easy-table/tag_spec.rb",
-     "spec/easy-table/util_spec.rb",
      "spec/spec_helper.rb"
   ]
   s.homepage = %q{http://github.com/kristianmandrup/easy-table}
@@ -53,14 +36,25 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{Simple table helper DSL similar to the well known form helpers}
   s.test_files = [
-    "spec/easy-table/cell_spec.rb",
-     "spec/easy-table/row/data_row_spec.rb",
-     "spec/easy-table/row/row_spec.rb",
-     "spec/easy-table/table/base_spec.rb",
-     "spec/easy-table/table/data_table_spec.rb",
+    "spec/easy-table/rails/configure_spec.rb",
+     "spec/easy-table/table/body_spec.rb",
+     "spec/easy-table/table/caption_spec.rb",
+     "spec/easy-table/table/data/table_spec.rb",
+     "spec/easy-table/table/footer_spec.rb",
+     "spec/easy-table/table/header_spec.rb",
+     "spec/easy-table/table/row/cell_spec.rb",
+     "spec/easy-table/table/row/data_row_spec.rb",
+     "spec/easy-table/table/row/row_spec.rb",
      "spec/easy-table/table/table_spec.rb",
-     "spec/easy-table/tag_spec.rb",
-     "spec/easy-table/util_spec.rb",
+     "spec/easy-table/table/util/tag_spec.rb",
+     "spec/easy-table/table/util/util_spec.rb",
+     "spec/easy-table/table_model/body_spec.rb",
+     "spec/easy-table/table_model/caption_spec.rb",
+     "spec/easy-table/table_model/cell_spec.rb",
+     "spec/easy-table/table_model/footer_spec.rb",
+     "spec/easy-table/table_model/header_spec.rb",
+     "spec/easy-table/table_model/row_spec.rb",
+     "spec/easy-table/table_model/table_spec.rb",
      "spec/spec_helper.rb"
   ]
 
@@ -69,27 +63,24 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_development_dependency(%q<rspec>, [">= 2.0.0.beta.19"])
-      s.add_development_dependency(%q<rspec-action_view>, [">= 0.3.0"])
-      s.add_runtime_dependency(%q<rails3_plugin_toolbox>, [">= 0.3.4"])
-      s.add_runtime_dependency(%q<activesupport>, [">= 3.0.0.rc"])
-      s.add_runtime_dependency(%q<sugar-high>, [">= 0.1.4"])
-      s.add_runtime_dependency(%q<sugar-high>, [">= 0.1.4"])
+      s.add_development_dependency(%q<rspec>, ["~> 2.0.0.beta.22"])
+      s.add_development_dependency(%q<rspec-action_view>, ["~> 0.3.0"])
+      s.add_runtime_dependency(%q<r3_plugin_toolbox>, ["~> 0.3.5"])
+      s.add_runtime_dependency(%q<activesupport>, ["~> 3.0.0"])
+      s.add_runtime_dependency(%q<sugar-high>, ["~> 0.2.10"])
     else
-      s.add_dependency(%q<rspec>, [">= 2.0.0.beta.19"])
-      s.add_dependency(%q<rspec-action_view>, [">= 0.3.0"])
-      s.add_dependency(%q<rails3_plugin_toolbox>, [">= 0.3.4"])
-      s.add_dependency(%q<activesupport>, [">= 3.0.0.rc"])
-      s.add_dependency(%q<sugar-high>, [">= 0.1.4"])
-      s.add_dependency(%q<sugar-high>, [">= 0.1.4"])
+      s.add_dependency(%q<rspec>, ["~> 2.0.0.beta.22"])
+      s.add_dependency(%q<rspec-action_view>, ["~> 0.3.0"])
+      s.add_dependency(%q<r3_plugin_toolbox>, ["~> 0.3.5"])
+      s.add_dependency(%q<activesupport>, ["~> 3.0.0"])
+      s.add_dependency(%q<sugar-high>, ["~> 0.2.10"])
     end
   else
-    s.add_dependency(%q<rspec>, [">= 2.0.0.beta.19"])
-    s.add_dependency(%q<rspec-action_view>, [">= 0.3.0"])
-    s.add_dependency(%q<rails3_plugin_toolbox>, [">= 0.3.4"])
-    s.add_dependency(%q<activesupport>, [">= 3.0.0.rc"])
-    s.add_dependency(%q<sugar-high>, [">= 0.1.4"])
-    s.add_dependency(%q<sugar-high>, [">= 0.1.4"])
+    s.add_dependency(%q<rspec>, ["~> 2.0.0.beta.22"])
+    s.add_dependency(%q<rspec-action_view>, ["~> 0.3.0"])
+    s.add_dependency(%q<r3_plugin_toolbox>, ["~> 0.3.5"])
+    s.add_dependency(%q<activesupport>, ["~> 3.0.0"])
+    s.add_dependency(%q<sugar-high>, ["~> 0.2.10"])
   end
 end
 
